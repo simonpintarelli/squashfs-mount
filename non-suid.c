@@ -197,8 +197,16 @@ void do_sqfs_mount(const char image[], int offset, const char mountpoint[]) {
             if (idle_timeout_secs) {
               setup_idle_timeout(ch.session, idle_timeout_secs);
             }
-            /* FIXME: multithreading */
-            err = fuse_session_loop(ch.session);
+
+# if FUSE_USE_VERSION >= 30
+              struct fuse_loop_config config;
+              config.clone_fd = 1;
+              config.max_idle_threads = 10;
+              err = fuse_session_loop_mt(ch.session, &config);
+# else /* FUSE_USE_VERSION < 30 */
+              err = fuse_session_loop_mt(ch.session);
+# endif /* FUSE_USE_VERSION */
+
             teardown_idle_timeout();
             fuse_remove_signal_handlers(ch.session);
           } else {
