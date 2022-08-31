@@ -10,9 +10,9 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y util-linux libmount-dev libfuse-dev libzstd-dev
-          wget https://github.com/vasi/squashfuse/archive/refs/tags/0.1.105.tar.gz && tar xf 0.1.105.tar.gz
-          cd squashfuse-0.1.105 || exit 1
-          ./autogen.sh && ./configure --prefix=/usr && sudo make install
+          wget https://github.com/simonpintarelli/squashfuse/archive/refs/tags/0.1.105-mt.tar.gz && tar xf 0.1.105-mt.tar.gz
+          cd squashfuse-0.1.105-mt || exit 1
+          ./autogen.sh && ./configure --prefix=/usr --enable-multithreading  && sudo make install
       - name: build
         run: |
           sudo make install-suid
@@ -26,9 +26,9 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build util-linux libmount-dev libfuse-dev libzstd-dev
-          wget https://github.com/vasi/squashfuse/archive/refs/tags/0.1.105.tar.gz && tar xf 0.1.105.tar.gz
-          cd squashfuse-0.1.105 || exit 1
-          ./autogen.sh && ./configure --prefix=/usr && sudo make install
+          wget https://github.com/simonpintarelli/squashfuse/archive/refs/tags/0.1.105-mt.tar.gz && tar xf 0.1.105-mt.tar.gz
+          cd squashfuse-0.1.105-mt || exit 1
+          ./autogen.sh && ./configure --prefix=/usr --enable-multithreading  && sudo make install
           # can't install as user because we need `sudo meson install` later
           sudo pip3 install meson
       - name: build
@@ -46,9 +46,10 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build util-linux libmount-dev libfuse-dev libzstd-dev
-          wget https://github.com/vasi/squashfuse/archive/refs/tags/0.1.105.tar.gz && tar xf 0.1.105.tar.gz
-          cd squashfuse-0.1.105 || exit 1
-          ./autogen.sh && ./configure --prefix=/usr && sudo make install
+          wget https://github.com/simonpintarelli/squashfuse/archive/refs/tags/0.1.105-mt.tar.gz && tar xf 0.1.105-mt.tar.gz
+          # wget https://github.com/vasi/squashfuse/archive/refs/tags/0.1.105.tar.gz && tar xf 0.1.105.tar.gz
+          cd squashfuse-0.1.105-mt || exit 1
+          ./autogen.sh && ./configure --prefix=/usr --enable-multithreading  && sudo make install
           # can't install as user because we need `sudo meson install` later
           sudo pip3 install meson
       - name: build
