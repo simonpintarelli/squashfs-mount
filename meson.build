@@ -1,4 +1,4 @@
-project('squashfs-mount', ['c'], default_options : ['c_std=c99'], version: files('VERSION'), meson_version: '>=0.57')
+project('squashfs-mount', ['c'], default_options : ['c_std=c11'], version: files('VERSION'), meson_version: '>=0.57')
 version = meson.project_version()
 
 # Look for libmount, squashfuse_ll

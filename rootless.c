@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
 
 #include <sched.h>
 #include <sys/mount.h>
@@ -200,14 +201,19 @@ void do_sqfs_mount(const char image[], int offset, const char mountpoint[]) {
               setup_idle_timeout(ch.session, idle_timeout_secs);
             }
 
+            static_assert(SQFS_MULTITHREADED);
 # if FUSE_USE_VERSION >= 30
               struct fuse_loop_config config;
               config.clone_fd = 1;
               config.max_idle_threads = 10;
               err = fuse_session_loop_mt(ch.session, &config);
+
 # else /* FUSE_USE_VERSION < 30 */
               err = fuse_session_loop_mt(ch.session);
 # endif /* FUSE_USE_VERSION */
+              if(err != 0) {
+                exit_with_error("fuse_session_loop exited with an error.");
+              }
 
             teardown_idle_timeout();
             fuse_remove_signal_handlers(ch.session);
