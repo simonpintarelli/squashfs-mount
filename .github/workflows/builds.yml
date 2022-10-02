@@ -26,14 +26,11 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build util-linux libmount-dev libfuse-dev libzstd-dev
-          wget https://github.com/vasi/squashfuse/archive/refs/tags/0.1.105.tar.gz && tar xf 0.1.105.tar.gz
-          cd squashfuse-0.1.105 || exit 1
-          ./autogen.sh && ./configure --prefix=/usr && sudo make install
           # can't install as user because we need `sudo meson install` later
           sudo pip3 install meson
       - name: build
         run: |
-          meson setup -Dfuse_version=fuse -Dsuid=true build
+          meson setup -Dsuid=true build
           meson compile -C build
           sudo meson install -C build
       - name: test
@@ -57,4 +54,4 @@ jobs:
           meson compile -C build
           sudo meson install -C build
       - name: test
-        run: . ci/test-mount.sh
+        run: . ci/test-mount-rootless.sh
